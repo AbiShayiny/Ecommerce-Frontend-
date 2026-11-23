@@ -1,0 +1,54 @@
+{
+  "name": "bidlify-frontend",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "22.1.4",
+    "@angular/compiler": "22.1.4",
+    "@angular/core": "22.1.4",
+    "@angular/forms": "22.1.4",
+    "@angular/platform-browser": "22.1.4",
+    "@angular/router": "22.1.4",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "22.1.6",
+    "@angular/cli": "22.1.6",
+    "@angular/compiler-cli": "22.1.4",
+    "jsdom": "^28.0.0",
+    "prettier": "^3.8.1",
+    "typescript": "~6.0.2",
+    "vitest": "^4.0.8"
+  },
+  "overrides": {
+    "@inquirer/input": "5.1.4",
+    "@schematics/angular": "22.1.6",
+    "@inquirer/external-editor": "3.0.4",
+    "lightningcss": "1.32.0",
+    "@inquirer/number": "4.2.1",
+    "@inquirer/core": "12.0.1",
+    "@inquirer/select": "5.2.3",
+    "@inquirer/checkbox": "5.2.3",
+    "@inquirer/ansi": "2.0.7",
+    "@inquirer/search": "4.3.1",
+    "@inquirer/rawlist": "5.3.3",
+    "@inquirer/editor": "5.3.1",
+    "@inquirer/password": "5.2.0",
+    "@inquirer/figures": "2.0.8",
+    "@inquirer/type": "4.1.0",
+    "@angular-devkit/architect": "0.2201.6",
+    "lightningcss-win32-x64-msvc": "1.32.0",
+    "@inquirer/confirm": "6.2.0",
+    "@angular-devkit/core": "22.1.6",
+    "@angular-devkit/schematics": "22.1.6",
+    "@inquirer/expand": "5.1.3"
+  }
+}
