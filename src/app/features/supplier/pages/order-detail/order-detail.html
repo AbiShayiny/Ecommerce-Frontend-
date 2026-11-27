@@ -1,0 +1,72 @@
+<div class="sup-page">
+  <a routerLink="/supplier/orders" class="back-link">← Back to Supplier Orders</a>
+
+  @if (order(); as o) {
+    <section class="detail-card card">
+      <div class="detail-head">
+        <div>
+          <h1>Order {{ o.orderNumber }}</h1>
+          <p>Placed on {{ o.createdAt }}</p>
+        </div>
+        <div class="badges">
+          <app-status-badge [status]="o.status" />
+          <app-status-badge [status]="'Payment: ' + o.paymentStatus" />
+        </div>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-box">
+          <h3>Buyer Collection Contact</h3>
+          <strong>{{ o.buyerName }}</strong>
+          <span>{{ o.buyerEmail }}</span>
+        </div>
+        <div class="info-box">
+          <h3>Click &amp; Collect Branch</h3>
+          <strong>{{ o.pickupBranchName }}</strong>
+          <span>{{ o.pickupAddress }}</span>
+        </div>
+      </div>
+
+      <div class="status-updater">
+        <label for="sup-ord-status">Update Permitted Order Status</label>
+        <div class="status-controls">
+          <select
+            id="sup-ord-status"
+            [ngModel]="o.status"
+            (ngModelChange)="updateStatus($event)"
+          >
+            <option value="Confirmed">Confirmed</option>
+            <option value="Ready for Pickup">Ready for Pickup</option>
+            <option value="Collected">Collected</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="items-box">
+        <h2>Ordered Electronics</h2>
+        @for (item of o.items; track item.productId) {
+          <div class="item-row">
+            <span>{{ item.productName }} × {{ item.quantity }}</span>
+            <strong>LKR {{ item.unitPrice * item.quantity | number }}</strong>
+          </div>
+        }
+        <div class="total-row">
+          <span>Order Total</span>
+          <strong>LKR {{ o.totalAmount | number }}</strong>
+        </div>
+      </div>
+
+      <div class="history-box">
+        <h3>Order Status History</h3>
+        <ul>
+          @for (entry of statusHistory(); track $index) {
+            <li>{{ entry }}</li>
+          }
+        </ul>
+      </div>
+    </section>
+  } @else {
+    <app-empty-state title="Order not found" description="Could not locate this supplier order." />
+  }
+</div>
+

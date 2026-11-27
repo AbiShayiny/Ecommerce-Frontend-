@@ -1,0 +1,50 @@
+<div class="adm-page">
+  <div class="page-head">
+    <h1>Notifications Management</h1>
+    <p>Create mock system notifications for suppliers and buyers and inspect delivery history.</p>
+  </div>
+
+  @if (feedback()) {
+    <div class="info-banner" role="status">{{ feedback() }}</div>
+  }
+
+  <div class="split-layout">
+    <form class="form-card card" (ngSubmit)="sendNotification()">
+      <h2>Create Notification</h2>
+      <div class="form-field">
+        <label for="n-aud">Target Audience</label>
+        <select id="n-aud" name="aud" [ngModel]="audience()" (ngModelChange)="audience.set($event)">
+          <option value="supplier">Suppliers</option>
+          <option value="buyer">Buyers</option>
+          <option value="all">All Users</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="n-title">Title *</label>
+        <input id="n-title" name="title" [ngModel]="title()" (ngModelChange)="title.set($event)" required />
+      </div>
+      <div class="form-field">
+        <label for="n-msg">Message *</label>
+        <textarea id="n-msg" rows="3" name="msg" [ngModel]="message()" (ngModelChange)="message.set($event)" required></textarea>
+      </div>
+      <button type="submit" class="btn-adm-primary">Send Mock Notification</button>
+    </form>
+
+    <div class="history-card card">
+      <h2>Notification History</h2>
+      <div class="notif-list">
+        @for (n of portal.notifications(); track n.id) {
+          <div class="notif-item">
+            <div class="notif-head">
+              <strong>{{ n.title }}</strong>
+              <app-status-badge [status]="n.recipientRole" />
+            </div>
+            <p>{{ n.message }}</p>
+            <span class="time">{{ n.createdAt }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+

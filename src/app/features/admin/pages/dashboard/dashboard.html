@@ -1,0 +1,84 @@
+<div class="adm-page">
+  <div class="page-head">
+    <div>
+      <h1>Admin Dashboard</h1>
+      <p>Platform-wide overview of BIDLIFY Electronics E-Commerce &amp; Click &amp; Collect operations.</p>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card card"><span>Total Buyers</span><strong>{{ portal.buyers().length }}</strong></div>
+    <div class="kpi-card card"><span>Total Suppliers</span><strong>{{ portal.suppliers().length }}</strong></div>
+    <div class="kpi-card card accent"><span>Pending Supplier Approvals</span><strong>{{ portal.pendingSuppliersCount() }}</strong></div>
+    <div class="kpi-card card"><span>Total Products</span><strong>{{ catalog.products().length }}</strong></div>
+    <div class="kpi-card card accent"><span>Pending Product Approvals</span><strong>{{ pendingProducts() }}</strong></div>
+    <div class="kpi-card card"><span>Total Orders</span><strong>{{ orderService.orders().length }}</strong></div>
+    <div class="kpi-card card"><span>Completed Orders</span><strong>{{ completedOrders() }}</strong></div>
+    <div class="kpi-card card accent"><span>Total Revenue</span><strong>LKR {{ totalRevenue() | number }}</strong></div>
+  </div>
+
+  <div class="grid-2">
+    <section class="panel card">
+      <div class="panel-head">
+        <h2>Sales Overview (Mock Monthly)</h2>
+        <a routerLink="/admin/reports">Full Reports →</a>
+      </div>
+      <div class="bars-list">
+        @for (m of monthlySales; track m.month) {
+          <div class="bar-row">
+            <span class="bar-label">{{ m.month }}</span>
+            <div class="bar-track"><div class="bar-fill" [style.width.%]="m.pct"></div></div>
+            <strong>LKR {{ m.value | number }}</strong>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="panel card">
+      <div class="panel-head">
+        <h2>Electronics Category Overview</h2>
+        <a routerLink="/admin/categories">Manage →</a>
+      </div>
+      <div class="bars-list">
+        @for (cat of categoryBreakdown(); track cat.name) {
+          <div class="bar-row">
+            <span class="bar-label-wide">{{ cat.name }}</span>
+            <div class="bar-track"><div class="bar-fill" [style.width.%]="cat.pct"></div></div>
+            <strong>{{ cat.count }}</strong>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="panel card">
+      <div class="panel-head">
+        <h2>Recent Supplier Registrations</h2>
+        <a routerLink="/admin/suppliers">Review All →</a>
+      </div>
+      <div class="rows-list">
+        @for (sup of recentSuppliers(); track sup.id) {
+          <div class="list-row">
+            <div><strong>{{ sup.businessName }}</strong><span>{{ sup.ownerName }} • {{ sup.createdAt }}</span></div>
+            <app-status-badge [status]="sup.approvalStatus" />
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="panel card">
+      <div class="panel-head">
+        <h2>Recent Click &amp; Collect Orders</h2>
+        <a routerLink="/admin/orders">View All →</a>
+      </div>
+      <div class="rows-list">
+        @for (ord of recentOrders(); track ord.id) {
+          <div class="list-row">
+            <div><strong>{{ ord.orderNumber }}</strong><span>{{ ord.pickupBranchName }}</span></div>
+            <app-status-badge [status]="ord.status" />
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+</div>
+

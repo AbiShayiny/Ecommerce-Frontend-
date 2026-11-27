@@ -1,0 +1,80 @@
+<div class="sup-page">
+  <div class="page-head">
+    <div>
+      <h1>{{ editId() ? 'Edit Electronics Product' : 'Add Electronics Product' }}</h1>
+      <p>Only electronics products are permitted. New submissions start in Pending Approval status.</p>
+    </div>
+    <a routerLink="/supplier/products" class="back-link">← Back to My Products</a>
+  </div>
+
+  @if (error()) {
+    <div class="error-banner" role="alert">{{ error() }}</div>
+  }
+  @if (success()) {
+    <div class="success-banner" role="status">{{ success() }}</div>
+  }
+
+  <form class="form-card card" (ngSubmit)="save()">
+    <div class="grid-2">
+      <div class="form-field">
+        <label for="pf-name">Product Name *</label>
+        <input id="pf-name" name="name" [ngModel]="name()" (ngModelChange)="name.set($event)" required />
+      </div>
+      <div class="form-field">
+        <label for="pf-cat">Electronics Category *</label>
+        <select id="pf-cat" name="cat" [ngModel]="categoryId()" (ngModelChange)="categoryId.set($event)">
+          @for (cat of catalog.categories(); track cat.id) {
+            <option [value]="cat.id">{{ cat.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="pf-brand">Brand *</label>
+        <input id="pf-brand" name="brand" [ngModel]="brand()" (ngModelChange)="brand.set($event)" required />
+      </div>
+      <div class="form-field">
+        <label for="pf-model">Model Number</label>
+        <input id="pf-model" name="model" [ngModel]="modelNumber()" (ngModelChange)="modelNumber.set($event)" />
+      </div>
+      <div class="form-field">
+        <label for="pf-sku">SKU *</label>
+        <input id="pf-sku" name="sku" [ngModel]="sku()" (ngModelChange)="sku.set($event)" required />
+      </div>
+      <div class="form-field">
+        <label for="pf-warranty">Warranty Information</label>
+        <input id="pf-warranty" name="warranty" [ngModel]="warranty()" (ngModelChange)="warranty.set($event)" />
+      </div>
+      <div class="form-field">
+        <label for="pf-price">Price (LKR) *</label>
+        <input id="pf-price" type="number" min="1" name="price" [ngModel]="price()" (ngModelChange)="price.set(+$event)" required />
+      </div>
+      <div class="form-field">
+        <label for="pf-dprice">Discount Price (Optional)</label>
+        <input id="pf-dprice" type="number" min="0" name="dprice" [ngModel]="discountPrice()" (ngModelChange)="discountPrice.set($event ? +$event : null)" />
+      </div>
+      <div class="form-field">
+        <label for="pf-stock">Stock Quantity *</label>
+        <input id="pf-stock" type="number" min="0" name="stock" [ngModel]="stock()" (ngModelChange)="stock.set(+$event)" required />
+      </div>
+      <div class="form-field">
+        <label for="pf-img">Product Image URL *</label>
+        <input id="pf-img" name="img" [ngModel]="imageUrl()" (ngModelChange)="imageUrl.set($event)" required />
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="pf-desc">Description *</label>
+      <textarea id="pf-desc" rows="3" name="desc" [ngModel]="shortDescription()" (ngModelChange)="shortDescription.set($event)" required></textarea>
+    </div>
+
+    <div class="form-field">
+      <label for="pf-specs">Specifications (Key: Value per line)</label>
+      <textarea id="pf-specs" rows="3" name="specs" [ngModel]="specifications()" (ngModelChange)="specifications.set($event)"></textarea>
+    </div>
+
+    <button type="submit" class="btn-sup-primary">
+      {{ editId() ? 'Save Changes' : 'Submit Product for Approval' }}
+    </button>
+  </form>
+</div>
+

@@ -1,0 +1,77 @@
+<section class="assistant-card card">
+  <div class="assistant-head">
+    <span class="ai-pill">AI Product Assistant</span>
+    <h2>Ask About {{ product().name }} or Compare</h2>
+  </div>
+
+  <div class="quick-prompts">
+    <button type="button" (click)="ask('Explain specifications in simple language')">Explain Specs Simply</button>
+    <button type="button" (click)="ask('What is the warranty information?')">Warranty Info</button>
+    <button type="button" (click)="ask('Is it available for Click & Collect pickup?')">Pickup &amp; Stock</button>
+  </div>
+
+  <form class="ask-row" (ngSubmit)="ask()">
+    <input
+      type="text"
+      name="prodQuestion"
+      placeholder="Ask a question about this product..."
+      [ngModel]="question()"
+      (ngModelChange)="question.set($event)"
+    />
+    <button type="submit" class="btn-ai">Ask AI</button>
+  </form>
+
+  @if (answer()) {
+    <div class="answer-box" role="status">{{ answer() }}</div>
+  }
+
+  <div class="compare-block">
+    <div class="compare-head">
+      <label for="compare-select">Compare with another electronics product:</label>
+      <select id="compare-select" [ngModel]="compareId()" (ngModelChange)="compareId.set($event)">
+        <option value="">Select a product to compare...</option>
+        @for (p of otherProducts(); track p.id) {
+          <option [value]="p.id">{{ p.name }} (LKR {{ p.price | number }})</option>
+        }
+      </select>
+    </div>
+
+    @if (comparison(); as cmp) {
+      <div class="compare-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Attribute</th>
+              <th>{{ cmp.left.name }}</th>
+              <th>{{ cmp.right.name }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Price</td>
+              <td><strong>LKR {{ cmp.left.price | number }}</strong></td>
+              <td><strong>LKR {{ cmp.right.price | number }}</strong></td>
+            </tr>
+            <tr>
+              <td>Rating</td>
+              <td>{{ cmp.left.rating }} ★ ({{ cmp.left.reviewCount }})</td>
+              <td>{{ cmp.right.rating }} ★ ({{ cmp.right.reviewCount }})</td>
+            </tr>
+            <tr>
+              <td>Warranty</td>
+              <td>{{ cmp.left.warranty || cmp.left.specs['Warranty'] || 'Standard Warranty' }}</td>
+              <td>{{ cmp.right.warranty || cmp.right.specs['Warranty'] || 'Standard Warranty' }}</td>
+            </tr>
+            <tr>
+              <td>Key Feature</td>
+              <td>{{ cmp.left.shortDescription }}</td>
+              <td>{{ cmp.right.shortDescription }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="compare-summary"><strong>Comparison Summary:</strong> {{ cmp.summary }}</p>
+      </div>
+    }
+  </div>
+</section>
+

@@ -1,0 +1,51 @@
+<div class="adm-page">
+  <div class="page-head">
+    <h1>Electronics Category Management</h1>
+    <p>Manage electronics-only product categories for BIDLIFY.</p>
+  </div>
+
+  @if (error()) { <div class="error-banner" role="alert">{{ error() }}</div> }
+  @if (message()) { <div class="info-banner" role="status">{{ message() }}</div> }
+
+  <div class="split-layout">
+    <form class="form-card card" (ngSubmit)="saveCategory()">
+      <h2>{{ editingId() ? 'Edit Category' : 'Add Electronics Category' }}</h2>
+      <div class="form-field">
+        <label for="cat-name">Category Name *</label>
+        <input id="cat-name" name="name" [ngModel]="name()" (ngModelChange)="name.set($event)" required />
+      </div>
+      <div class="form-field">
+        <label for="cat-desc">Description *</label>
+        <textarea id="cat-desc" rows="3" name="desc" [ngModel]="description()" (ngModelChange)="description.set($event)" required></textarea>
+      </div>
+      <div class="btn-row">
+        <button type="submit" class="btn-adm-primary">{{ editingId() ? 'Update' : 'Add Category' }}</button>
+        @if (editingId()) {
+          <button type="button" class="btn-adm-outline" (click)="resetForm()">Cancel</button>
+        }
+      </div>
+    </form>
+
+    <div class="table-card card">
+      <table>
+        <thead><tr><th>Category</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          @for (cat of catalog.categories(); track cat.id) {
+            <tr>
+              <td><strong>{{ cat.name }}</strong><div class="sub">{{ cat.description }}</div></td>
+              <td><app-status-badge [status]="cat.active ? 'Active' : 'Suspended'" /></td>
+              <td class="actions">
+                <button type="button" class="link-btn" (click)="edit(cat)">Edit</button>
+                <button type="button" class="link-btn" (click)="catalog.toggleCategoryActive(cat.id)">
+                  {{ cat.active ? 'Deactivate' : 'Activate' }}
+                </button>
+                <button type="button" class="del-btn" (click)="deleteCat(cat)">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

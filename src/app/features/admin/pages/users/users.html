@@ -1,0 +1,54 @@
+<div class="adm-page">
+  <div class="page-head">
+    <h1>User Management</h1>
+    <p>View Google-authenticated Buyers and registered Suppliers.</p>
+  </div>
+
+  <div class="filters-bar card">
+    <input type="search" placeholder="Search name or email..." [ngModel]="search()" (ngModelChange)="search.set($event)" />
+    <select [ngModel]="roleFilter()" (ngModelChange)="roleFilter.set($event)">
+      <option value="all">All Roles</option>
+      <option value="Buyer">Buyer</option>
+      <option value="Supplier">Supplier</option>
+    </select>
+    <select [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event)">
+      <option value="all">All Statuses</option>
+      <option value="Active">Active</option>
+      <option value="Suspended">Suspended</option>
+      <option value="Approved">Approved</option>
+      <option value="Pending">Pending</option>
+    </select>
+  </div>
+
+  <div class="table-card card">
+    <table>
+      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        @for (u of filteredUsers(); track u.id) {
+          <tr>
+            <td><strong>{{ u.name }}</strong></td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.role }}</td>
+            <td><app-status-badge [status]="u.status" /></td>
+            <td class="actions">
+              <button type="button" class="link-btn" (click)="selectedUser.set(u)">View</button>
+              @if (u.role === 'Buyer') {
+                <button type="button" class="link-btn" (click)="toggleBuyer(u.id)">
+                  {{ u.status === 'Active' ? 'Deactivate' : 'Activate' }}
+                </button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (selectedUser(); as u) {
+    <div class="detail-box card">
+      <strong>{{ u.name }} ({{ u.role }})</strong>
+      <span>{{ u.email }} • {{ u.detail }}</span>
+    </div>
+  }
+</div>
+

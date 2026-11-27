@@ -1,0 +1,69 @@
+<div class="sup-page">
+  <div class="page-head">
+    <div>
+      <h1>Supplier Dashboard</h1>
+      <p>Welcome back, {{ supplier()?.ownerName }}. Overview of your electronics store.</p>
+    </div>
+    <a routerLink="/supplier/products/new" class="btn-sup-primary">+ Add Electronics Product</a>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card card"><span>Total Products</span><strong>{{ myProducts().length }}</strong></div>
+    <div class="kpi-card card"><span>Active Products</span><strong>{{ activeCount() }}</strong></div>
+    <div class="kpi-card card"><span>Pending Products</span><strong>{{ pendingProductCount() }}</strong></div>
+    <div class="kpi-card card"><span>Total Orders</span><strong>{{ myOrders().length }}</strong></div>
+    <div class="kpi-card card"><span>Pending Orders</span><strong>{{ pendingOrdersCount() }}</strong></div>
+    <div class="kpi-card card"><span>Completed Orders</span><strong>{{ completedOrdersCount() }}</strong></div>
+    <div class="kpi-card card accent"><span>Revenue Summary</span><strong>LKR {{ totalRevenue() | number }}</strong></div>
+  </div>
+
+  <div class="panels-grid">
+    <section class="panel card">
+      <div class="panel-head">
+        <h2>Recent Click &amp; Collect Orders</h2>
+        <a routerLink="/supplier/orders">View All →</a>
+      </div>
+      @if (recentOrders().length > 0) {
+        <div class="list-rows">
+          @for (order of recentOrders(); track order.id) {
+            <a [routerLink]="['/supplier/orders', order.id]" class="list-row">
+              <div>
+                <strong>{{ order.orderNumber }}</strong>
+                <span>{{ order.pickupBranchName }} • {{ order.createdAt }}</span>
+              </div>
+              <div class="row-right">
+                <strong>LKR {{ order.totalAmount | number }}</strong>
+                <app-status-badge [status]="order.status" />
+              </div>
+            </a>
+          }
+        </div>
+      } @else {
+        <p class="muted">No orders yet.</p>
+      }
+    </section>
+
+    <section class="panel card">
+      <div class="panel-head">
+        <h2>Low Stock Alerts (≤ 10)</h2>
+        <a routerLink="/supplier/inventory">Manage Stock →</a>
+      </div>
+      @if (lowStockProducts().length > 0) {
+        <div class="list-rows">
+          @for (prod of lowStockProducts(); track prod.id) {
+            <div class="list-row">
+              <div>
+                <strong>{{ prod.name }}</strong>
+                <span>SKU: {{ prod.sku }}</span>
+              </div>
+              <app-status-badge [status]="prod.stock === 0 ? 'Out of Stock' : prod.stock + ' left'" />
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="muted">All electronics products are well stocked.</p>
+      }
+    </section>
+  </div>
+</div>
+

@@ -1,0 +1,66 @@
+<div class="sup-page">
+  <div class="page-head">
+    <div>
+      <h1>Supplier Orders</h1>
+      <p>Manage Click &amp; Collect orders containing your electronics products.</p>
+    </div>
+  </div>
+
+  <div class="filters-bar card">
+    <input
+      type="search"
+      placeholder="Search by order ref, buyer, branch, or product..."
+      [ngModel]="search()"
+      (ngModelChange)="search.set($event)"
+    />
+    <select [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event)">
+      <option value="all">All Statuses</option>
+      <option value="Pending Payment">Pending Payment</option>
+      <option value="Payment Submitted">Payment Submitted</option>
+      <option value="Confirmed">Confirmed</option>
+      <option value="Ready for Pickup">Ready for Pickup</option>
+      <option value="Collected">Collected</option>
+    </select>
+  </div>
+
+  @if (filteredOrders().length > 0) {
+    <div class="table-card card">
+      <table>
+        <thead>
+          <tr>
+            <th>Order Ref</th>
+            <th>Date</th>
+            <th>Products</th>
+            <th>Amount (LKR)</th>
+            <th>Click &amp; Collect Branch</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (o of filteredOrders(); track o.id) {
+            <tr>
+              <td><strong>{{ o.orderNumber }}</strong></td>
+              <td>{{ o.createdAt }}</td>
+              <td>
+                @for (item of o.items; track item.productId) {
+                  <div class="item-line">{{ item.productName }} (×{{ item.quantity }})</div>
+                }
+              </td>
+              <td><strong>{{ o.totalAmount | number }}</strong></td>
+              <td>{{ o.pickupBranchName }}</td>
+              <td><app-status-badge [status]="o.status" /></td>
+              <td><a [routerLink]="['/supplier/orders', o.id]" class="view-link">Details →</a></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <app-empty-state
+      title="No matching orders"
+      description="No Click & Collect orders matched your filters."
+    />
+  }
+</div>
+

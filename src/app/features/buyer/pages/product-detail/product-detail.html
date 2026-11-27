@@ -1,0 +1,187 @@
+<div class="product-detail-page">
+  @if (cartFeedback()) {
+    <div class="toast-banner" role="status" aria-live="polite">{{ cartFeedback() }}</div>
+  }
+
+  <div class="container page-wrap">
+    @if (product(); as p) {
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a routerLink="/">Home</a>
+        <span>/</span>
+        <a routerLink="/products">Shop</a>
+        <span>/</span>
+        <a [routerLink]="['/categories', p.categorySlug]">{{ p.categoryName }}</a>
+        <span>/</span>
+        <span class="current">{{ p.name }}</span>
+      </nav>
+
+      <section class="detail-grid card">
+        <!-- Image Gallery -->
+        <div class="gallery-col">
+          <div class="main-image">
+            <img [src]="selectedImage() || p.imageUrl" [alt]="p.name" />
+            <span class="pickup-pill">Click &amp; Collect Only</span>
+          </div>
+
+          @if (galleryImages().length > 1) {
+            <div class="thumb-row">
+              @for (img of galleryImages(); track img) {
+                <button
+                  type="button"
+                  class="thumb-btn"
+                  [class.active]="(selectedImage() || p.imageUrl) === img"
+                  (click)="selectImage(img)"
+                >
+                  <img [src]="img" [alt]="p.name + ' thumbnail'" />
+                </button>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Product Summary & Actions -->
+        <div class="info-col">
+          <div class="meta-top">
+            <span class="brand-tag">{{ p.brand }}</span>
+            <span class="sku-tag">SKU: {{ p.sku }}</span>
+          </div>
+
+          <h1>{{ p.name }}</h1>
+
+          <div class="rating-row">
+            <app-rating-stars [rating]="p.rating" [reviewCount]="p.reviewCount" />
+            <span class="supplier-chip">Supplier: {{ p.supplierName }}</span>
+          </div>
+
+          <div class="price-row">
+            <span class="price">LKR {{ p.price | number }}</span>
+            @if (p.originalPrice) {
+              <span class="old-price">LKR {{ p.originalPrice | number }}</span>
+            }
+          </div>
+
+          <p class="description">{{ p.shortDescription }}</p>
+
+          <div class="stock-row">
+            <span class="stock-dot" [class.in-stock]="p.stock > 0"></span>
+            <span>
+              {{ p.stock > 0 ? 'In Stock (' + p.stock + ' available)' : 'Out of Stock' }}
+            </span>
+          </div>
+
+          <div class="actions-row">
+            <div class="qty-control">
+              <span class="qty-label" id="qty-label">Quantity</span>
+              <div class="qty-box" role="group" aria-labelledby="qty-label">
+                <button
+                  type="button"
+                  aria-label="Decrease quantity"
+                  [disabled]="quantity() <= 1 || p.stock === 0"
+                  (click)="decrementQty()"
+                >
+                  −
+                </button>
+                <span class="qty-value">{{ quantity() }}</span>
+                <button
+                  type="button"
+                  aria-label="Increase quantity"
+                  [disabled]="quantity() >= p.stock || p.stock === 0"
+                  (click)="incrementQty()"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="btn-add-cart"
+              [disabled]="p.stock === 0"
+              (click)="handleAddToCart(p)"
+            >
+              {{ p.stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
+            </button>
+          </div>
+
+          <div class="branches-box">
+            <h3>Click &amp; Collect Branch Availability</h3>
+            @if (availableBranches().length > 0) {
+              <ul>
+                @for (branch of availableBranches(); track branch.id) {
+                  <li>
+                    <strong>{{ branch.name }}</strong>
+                    <span>{{ branch.address }} • {{ branch.hours }}</span>
+                  </li>
+                }
+              </ul>
+            } @else {
+              <p class="muted-note">Branch availability details are not listed for this item.</p>
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- Specs & Reviews -->
+      <section class="specs-reviews-grid">
+        <div class="panel card">
+          <h2>Technical Specifications</h2>
+          @if (specEntries().length > 0) {
+            <dl class="specs-list">
+              @for (entry of specEntries(); track entry[0]) {
+                <div class="spec-row">
+                  <dt>{{ entry[0] }}</dt>
+                  <dd>{{ entry[1] }}</dd>
+                </div>
+              }
+            </dl>
+          } @else {
+            <p class="muted-note">No specifications listed.</p>
+          }
+        </div>
+
+        <div class="panel card">
+          <h2>Customer Reviews ({{ reviews().length }})</h2>
+          @if (reviews().length > 0) {
+            <div class="reviews-list">
+              @for (rev of reviews(); track rev.id) {
+                <article class="review-item">
+                  <div class="review-head">
+                    <strong>{{ rev.buyerName }}</strong>
+                    <span>{{ rev.createdAt }}</span>
+                  </div>
+                  <app-rating-stars [rating]="rev.rating" />
+                  <p>{{ rev.comment }}</p>
+                </article>
+              }
+            </div>
+          } @else {
+            <p class="muted-note">No reviews yet for this product.</p>
+          }
+        </div>
+      </section>
+
+      <!-- AI Product Assistant -->
+      <app-ai-product-assistant [product]="p" />
+
+      <!-- Related Products -->
+      @if (relatedProducts().length > 0) {
+        <section class="related-section">
+          <h2>Related Electronics</h2>
+          <div class="related-grid">
+            @for (item of relatedProducts(); track item.id) {
+              <app-product-card [product]="item" (addToCart)="handleAddToCart(item, 1)" />
+            }
+          </div>
+        </section>
+      }
+    } @else {
+      <app-empty-state
+        title="Product not found"
+        description="The requested electronics product could not be found in the BIDLIFY catalog."
+        actionLabel="Back to Shop"
+        (actionClick)="backToShop()"
+      />
+    }
+  </div>
+</div>
+

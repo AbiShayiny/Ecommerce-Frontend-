@@ -1,0 +1,73 @@
+<div class="portal-shell">
+  @if (sidebarOpen()) {
+    <div class="sidebar-backdrop" (click)="closeSidebar()"></div>
+  }
+
+  <aside class="portal-sidebar" [class.open]="sidebarOpen()">
+    <div class="sidebar-header">
+      <a routerLink="/" class="brand">
+        <span class="brand-mark">B</span>
+        <div>
+          <span class="brand-name">BIDLIFY</span>
+          <span class="portal-label">{{ portalTitle() }}</span>
+        </div>
+      </a>
+      <button
+        type="button"
+        class="close-sidebar-btn"
+        aria-label="Close navigation"
+        (click)="closeSidebar()"
+      >
+        ✕
+      </button>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Portal navigation">
+      @for (item of navItems(); track item.route) {
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          class="nav-item"
+          (click)="closeSidebar()"
+        >
+          <span>{{ item.label }}</span>
+          @if (item.badge && item.badge > 0) {
+            <span class="nav-badge">{{ item.badge }}</span>
+          }
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <span class="user-name">{{ userName() }}</span>
+        @if (userSubtitle()) {
+          <span class="user-sub">{{ userSubtitle() }}</span>
+        }
+      </div>
+      <button type="button" class="btn btn-outline btn-sm signout-btn" (click)="signOut.emit()">
+        Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <div class="portal-content">
+    <header class="portal-topbar">
+      <button
+        type="button"
+        class="menu-btn"
+        aria-label="Open navigation"
+        (click)="toggleSidebar()"
+      >
+        ☰
+      </button>
+      <span class="topbar-title">{{ portalTitle() }}</span>
+      <a routerLink="/" class="storefront-link">View Storefront →</a>
+    </header>
+
+    <main class="portal-main">
+      <router-outlet />
+    </main>
+  </div>
+</div>
+

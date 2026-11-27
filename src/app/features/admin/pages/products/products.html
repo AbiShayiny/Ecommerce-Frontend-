@@ -1,0 +1,79 @@
+<div class="adm-page">
+  <div class="page-head">
+    <h1>Product Management &amp; Approval</h1>
+    <p>Approve, reject, or deactivate supplier-submitted electronics products.</p>
+  </div>
+
+  @if (feedback()) {
+    <div class="info-banner" role="status">{{ feedback() }}</div>
+  }
+
+  <div class="filters-bar card">
+    <input type="search" placeholder="Search name, SKU, brand..." [ngModel]="search()" (ngModelChange)="search.set($event)" />
+    <select [ngModel]="categoryFilter()" (ngModelChange)="categoryFilter.set($event)">
+      <option value="all">All Categories</option>
+      @for (c of catalog.categories(); track c.id) {
+        <option [value]="c.slug">{{ c.name }}</option>
+      }
+    </select>
+    <select [ngModel]="supplierFilter()" (ngModelChange)="supplierFilter.set($event)">
+      <option value="all">All Suppliers</option>
+      @for (s of portal.suppliers(); track s.id) {
+        <option [value]="s.id">{{ s.businessName }}</option>
+      }
+    </select>
+    <select [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event)">
+      <option value="all">All Statuses</option>
+      <option value="Active">Active</option>
+      <option value="Pending">Pending</option>
+      <option value="Rejected">Rejected</option>
+    </select>
+  </div>
+
+  <div class="split-layout">
+    <div class="table-card card">
+      <table>
+        <thead><tr><th>Product</th><th>Supplier</th><th>Price</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          @for (p of filteredProducts(); track p.id) {
+            <tr>
+              <td><strong>{{ p.name }}</strong><div class="sub">{{ p.brand }} • {{ p.sku }}</div></td>
+              <td>{{ p.supplierName }}</td>
+              <td>LKR {{ p.price | number }}</td>
+              <td><app-status-badge [status]="getStatus(p)" /></td>
+              <td><button type="button" class="link-btn" (click)="inspect(p)">Inspect</button></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (selectedProduct(); as p) {
+      <aside class="detail-card card">
+        <img [src]="p.imageUrl" [alt]="p.name" class="preview-img" />
+        <div class="detail-head">
+          <h2>{{ p.name }}</h2>
+          <app-status-badge [status]="getStatus(p)" />
+        </div>
+        <p class="desc">{{ p.shortDescription }}</p>
+        <div class="kv-list">
+          @for (spec of getSpecs(p); track spec[0]) {
+            <div><span>{{ spec[0] }}</span><strong>{{ spec[1] }}</strong></div>
+          }
+        </div>
+        <div class="form-field">
+          <label for="prod-rej">Rejection Reason</label>
+          <textarea id="prod-rej" rows="2" [ngModel]="rejectionReason()" (ngModelChange)="rejectionReason.set($event)"></textarea>
+        </div>
+        <div class="action-row">
+          <button type="button" class="btn-adm-primary" (click)="approve(p)">Approve</button>
+          <button type="button" class="btn-adm-danger" (click)="reject(p)">Reject</button>
+          <button type="button" class="btn-adm-outline" (click)="toggleActive(p)">
+            {{ p.active ? 'Deactivate' : 'Activate' }}
+          </button>
+        </div>
+      </aside>
+    }
+  </div>
+</div>
+

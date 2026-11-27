@@ -1,0 +1,75 @@
+<div class="adm-page">
+  <div class="page-head">
+    <h1>Order Management</h1>
+    <p>Monitor all Click &amp; Collect electronics orders across buyers and suppliers.</p>
+  </div>
+
+  <div class="filters-bar card">
+    <input type="search" placeholder="Search order ref, buyer, supplier..." [ngModel]="search()" (ngModelChange)="search.set($event)" />
+    <select [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event)">
+      <option value="all">All Order Statuses</option>
+      <option value="Pending Payment">Pending Payment</option>
+      <option value="Payment Submitted">Payment Submitted</option>
+      <option value="Confirmed">Confirmed</option>
+      <option value="Ready for Pickup">Ready for Pickup</option>
+      <option value="Collected">Collected</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+    <select [ngModel]="paymentFilter()" (ngModelChange)="paymentFilter.set($event)">
+      <option value="all">All Payment Statuses</option>
+      <option value="Pending">Pending</option>
+      <option value="Verified">Verified</option>
+      <option value="Flagged">Flagged</option>
+    </select>
+    <input type="date" [ngModel]="dateFilter()" (ngModelChange)="dateFilter.set($event)" aria-label="Filter by date" />
+  </div>
+
+  <div class="split-layout">
+    <div class="table-card card">
+      <table>
+        <thead><tr><th>Order</th><th>Buyer / Supplier</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody>
+          @for (o of filteredOrders(); track o.id) {
+            <tr>
+              <td><strong>{{ o.orderNumber }}</strong><div class="sub">{{ o.createdAt }}</div></td>
+              <td>{{ o.buyerName }}<div class="sub">{{ o.supplierName }}</div></td>
+              <td>LKR {{ o.totalAmount | number }}</td>
+              <td><app-status-badge [status]="o.status" /></td>
+              <td><button type="button" class="link-btn" (click)="selectedOrder.set(o)">Details</button></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (selectedOrder(); as o) {
+      <aside class="detail-card card">
+        <div class="detail-head">
+          <h2>{{ o.orderNumber }}</h2>
+          <app-status-badge [status]="o.status" />
+        </div>
+        <div class="kv-list">
+          <div><span>Buyer</span><strong>{{ o.buyerName }} ({{ o.buyerEmail }})</strong></div>
+          <div><span>Supplier</span><strong>{{ o.supplierName }}</strong></div>
+          <div><span>Collection Branch</span><strong>{{ o.pickupBranchName }}</strong></div>
+          <div><span>Payment</span><strong>{{ o.paymentMethod }} ({{ o.paymentStatus }})</strong></div>
+        </div>
+        <div class="items-mini">
+          @for (item of o.items; track item.productId) {
+            <div>{{ item.productName }} × {{ item.quantity }}</div>
+          }
+        </div>
+        <div class="form-field">
+          <label for="adm-ord-st">Update Permitted Status</label>
+          <select id="adm-ord-st" [ngModel]="o.status" (ngModelChange)="updateStatus(o, $event)">
+            <option value="Confirmed">Confirmed</option>
+            <option value="Ready for Pickup">Ready for Pickup</option>
+            <option value="Collected">Collected</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+      </aside>
+    }
+  </div>
+</div>
+

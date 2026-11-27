@@ -1,0 +1,195 @@
+<div class="checkout-page">
+  <section class="page-banner">
+    <div class="container">
+      <span class="kicker">Click &amp; Collect Only • No Delivery</span>
+      <h1>Checkout</h1>
+      <p>Complete your contact details, choose a collection branch, and confirm your order.</p>
+    </div>
+  </section>
+
+  <div class="container">
+    @if (cart.items().length > 0) {
+      <div class="checkout-layout">
+        <div class="checkout-form-col">
+          @if (formError()) {
+            <div class="error-banner" role="alert">{{ formError() }}</div>
+          }
+
+          <!-- 1. Buyer Contact Information -->
+          <section class="panel card">
+            <h2>1. Buyer Contact Information</h2>
+            <div class="fields-grid">
+              <div class="form-field">
+                <label for="co-name">Full Name *</label>
+                <input
+                  id="co-name"
+                  type="text"
+                  [ngModel]="contactName()"
+                  (ngModelChange)="contactName.set($event)"
+                  required
+                />
+              </div>
+
+              <div class="form-field">
+                <label for="co-email">Google Email *</label>
+                <input
+                  id="co-email"
+                  type="email"
+                  [ngModel]="contactEmail()"
+                  (ngModelChange)="contactEmail.set($event)"
+                  required
+                />
+              </div>
+
+              <div class="form-field">
+                <label for="co-phone">Contact Phone *</label>
+                <input
+                  id="co-phone"
+                  type="tel"
+                  placeholder="+94 7X XXX XXXX"
+                  [ngModel]="contactPhone()"
+                  (ngModelChange)="contactPhone.set($event)"
+                  required
+                />
+              </div>
+            </div>
+          </section>
+
+          <!-- 2. Click & Collect Branch Selection -->
+          <section class="panel card">
+            <h2>2. Click &amp; Collect Branch Selection *</h2>
+            <p class="panel-note">Select a BIDLIFY branch where you will collect your order.</p>
+
+            <div class="branch-options">
+              @for (branch of cart.branches(); track branch.id) {
+                <label
+                  class="branch-option"
+                  [class.selected]="selectedBranchId() === branch.id"
+                >
+                  <input
+                    type="radio"
+                    name="pickupBranch"
+                    [value]="branch.id"
+                    [checked]="selectedBranchId() === branch.id"
+                    (change)="onBranchChange(branch.id)"
+                  />
+                  <div>
+                    <strong>{{ branch.name }}</strong>
+                    <span>{{ branch.address }}</span>
+                    <span class="branch-hours">{{ branch.city }} • {{ branch.hours }}</span>
+                  </div>
+                </label>
+              }
+            </div>
+          </section>
+
+          <!-- 3. Mock Payment Flow (Configurable) -->
+          <section class="panel card">
+            <h2>3. Payment Method (Mock Frontend Flow)</h2>
+            <div class="form-field">
+              <label for="co-payment-method">Payment Method</label>
+              <select
+                id="co-payment-method"
+                [ngModel]="paymentMethod()"
+                (ngModelChange)="paymentMethod.set($event)"
+              >
+                <option value="Merchant QR / Bank Transfer">Merchant QR / Bank Transfer</option>
+                <option value="Pay at Collection Counter">Pay at Collection Counter</option>
+              </select>
+            </div>
+
+            @if (orderService.paymentConfig(); as cfg) {
+              <p class="panel-note">{{ cfg.instructions }}</p>
+
+              @if (cfg.showPaymentQr && paymentMethod() === 'Merchant QR / Bank Transfer') {
+                <div class="mock-qr-box">
+                  <div class="qr-placeholder" aria-hidden="true">QR</div>
+                  <div>
+                    <strong>{{ cfg.qrLabel }}</strong>
+                    <span>Mock payment display for frontend verification.</span>
+                  </div>
+                </div>
+              }
+
+              @if (cfg.allowReferenceSubmission && paymentMethod() === 'Merchant QR / Bank Transfer') {
+                <div class="fields-grid">
+                  <div class="form-field">
+                    <label for="co-ref">Payment Reference (Optional)</label>
+                    <input
+                      id="co-ref"
+                      type="text"
+                      placeholder="e.g. TXN-12345678"
+                      [ngModel]="paymentReference()"
+                      (ngModelChange)="paymentReference.set($event)"
+                    />
+                  </div>
+
+                  @if (cfg.allowReceiptUpload) {
+                    <div class="form-field">
+                      <label for="co-receipt">Receipt Attachment (Mock)</label>
+                      <input
+                        id="co-receipt"
+                        type="file"
+                        accept=".jpg,.jpeg,.png,.pdf"
+                        (change)="onReceiptSelected($event)"
+                      />
+                    </div>
+                  }
+                </div>
+              }
+            }
+          </section>
+        </div>
+
+        <!-- Order Summary -->
+        <aside class="summary-card card">
+          <h2>Order Summary</h2>
+          <div class="summary-items">
+            @for (item of cart.items(); track item.productId) {
+              <div class="summary-item">
+                <div>
+                  <strong>{{ item.name }}</strong>
+                  <span>{{ item.quantity }} × LKR {{ item.price | number }}</span>
+                </div>
+                <strong>LKR {{ item.price * item.quantity | number }}</strong>
+              </div>
+            }
+          </div>
+
+          <div class="summary-meta">
+            <div>
+              <span>Collection Branch</span>
+              <strong>{{ cart.selectedBranch().name }}</strong>
+            </div>
+            <div>
+              <span>Payment Method</span>
+              <strong>{{ paymentMethod() }}</strong>
+            </div>
+          </div>
+
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>LKR {{ cart.subtotal() | number }}</span>
+          </div>
+          <div class="summary-total">
+            <span>Final Total</span>
+            <strong>LKR {{ cart.subtotal() | number }}</strong>
+          </div>
+
+          <button type="button" class="btn-buyer-primary" (click)="placeOrder()">
+            Confirm Order
+          </button>
+          <a routerLink="/cart" class="btn-buyer-outline">Back to Cart</a>
+        </aside>
+      </div>
+    } @else {
+      <app-empty-state
+        title="No items in cart"
+        description="Add electronics to your cart before proceeding to Click & Collect checkout."
+        actionLabel="Browse Electronics"
+        (actionClick)="backToShop()"
+      />
+    }
+  </div>
+</div>
+
