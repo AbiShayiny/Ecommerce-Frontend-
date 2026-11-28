@@ -1,0 +1,41 @@
+<article class="product-card card">
+  <a [routerLink]="['/products', product().id]" class="product-media">
+    <img [src]="product().imageUrl" [alt]="product().name" loading="lazy" />
+    <span class="pickup-tag">Click &amp; Collect</span>
+  </a>
+
+  <div class="product-body">
+    <div class="product-meta">
+      <span class="brand">{{ product().brand }}</span>
+      <span class="category">{{ product().categoryName }}</span>
+    </div>
+
+    <a [routerLink]="['/products', product().id]" class="product-title">
+      {{ product().name }}
+    </a>
+
+    <app-rating-stars
+      [rating]="product().rating"
+      [reviewCount]="product().reviewCount"
+    />
+
+    <div class="product-footer">
+      <div class="price-block">
+        <span class="price">LKR {{ product().price | number }}</span>
+        @if (product().originalPrice) {
+          <span class="old-price">LKR {{ product().originalPrice | number }}</span>
+        }
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-primary btn-sm"
+        [disabled]="product().stock === 0"
+        (click)="onAddToCart($event)"
+      >
+        {{ product().stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
+      </button>
+    </div>
+  </div>
+</article>
+

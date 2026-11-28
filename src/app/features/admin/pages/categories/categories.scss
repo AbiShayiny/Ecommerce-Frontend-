@@ -1,0 +1,20 @@
+.adm-page { display: flex; flex-direction: column; gap: 1.25rem; color: #242424; }
+.page-head h1 { color: #242424; font-size: 1.625rem; margin: 0 0 0.25rem; }
+.page-head p { color: #475569; margin: 0; font-size: 0.9375rem; }
+.error-banner { padding: 0.75rem 1rem; border-radius: 8px; background: #fee2e2; color: #dc2626; font-weight: 600; font-size: 0.875rem; }
+.info-banner { padding: 0.75rem 1rem; border-radius: 8px; background: #fff0e5; color: #f47721; border: 1px solid #f47721; font-weight: 600; font-size: 0.875rem; }
+
+.split-layout { display: grid; gap: 1.25rem; align-items: start; @media (min-width: 1024px) { grid-template-columns: 340px 1fr; } }
+.form-card { padding: 1.25rem; border-color: #eaeaea; display: flex; flex-direction: column; gap: 1rem; h2 { font-size: 1.0625rem; margin: 0; } }
+.btn-row, .actions { display: flex; gap: 0.625rem; flex-wrap: wrap; }
+.btn-adm-primary { padding: 0.625rem 1.25rem; border: 0; border-radius: 8px; background: #f47721; color: #fff; font-weight: 700; cursor: pointer; }
+.btn-adm-outline { padding: 0.625rem 1rem; border: 1px solid #eaeaea; border-radius: 8px; background: #fff; color: #242424; font-weight: 700; cursor: pointer; }
+
+.table-card { border-color: #eaeaea; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+th, td { padding: 0.875rem 1rem; text-align: left; border-bottom: 1px solid #eaeaea; }
+th { background: #f8f7f4; color: #475569; font-weight: 700; font-size: 0.8125rem; }
+.sub { font-size: 0.75rem; color: #64748b; }
+.link-btn { background: none; border: 0; padding: 0; color: #f47721; font-weight: 700; cursor: pointer; }
+.del-btn { background: none; border: 0; padding: 0; color: #dc2626; font-weight: 600; cursor: pointer; }
+

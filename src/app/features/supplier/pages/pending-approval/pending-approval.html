@@ -1,0 +1,33 @@
+<div class="pending-page">
+  <div class="pending-card card">
+    <span class="kicker">BIDLIFY Supplier Verification</span>
+    <h1>Account Pending Admin Approval</h1>
+    <p>
+      Admin approval is mandatory before you can access the Supplier Dashboard, list electronics
+      products, or manage Click &amp; Collect orders.
+    </p>
+
+    @if (auth.currentSupplier(); as sup) {
+      <div class="status-row">
+        <span>Current Status:</span>
+        <app-status-badge [status]="sup.approvalStatus" />
+      </div>
+
+      <div class="details-box">
+        <div><span>Business Name</span><strong>{{ sup.businessName }}</strong></div>
+        <div><span>Registration No</span><strong>{{ sup.businessRegNo }}</strong></div>
+        <div><span>Owner Name</span><strong>{{ sup.ownerName }}</strong></div>
+        <div><span>Official Email</span><strong>{{ sup.email }}</strong></div>
+        <div><span>Business Address</span><strong>{{ sup.businessAddress }}</strong></div>
+      </div>
+    } @else {
+      <p class="muted">No pending supplier session is currently active.</p>
+    }
+
+    <div class="actions">
+      <button type="button" class="btn-sup-primary" (click)="logout()">Logout</button>
+      <a routerLink="/" class="btn-sup-outline">Back to Storefront</a>
+    </div>
+  </div>
+</div>
+

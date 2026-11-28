@@ -1,0 +1,71 @@
+<div class="sup-page">
+  <div class="page-head">
+    <div>
+      <h1>Supplier Profile</h1>
+      <p>Manage your business details, owner information, and verification status.</p>
+    </div>
+    @if (supplier(); as sup) {
+      <app-status-badge [status]="sup.approvalStatus" />
+    }
+  </div>
+
+  @if (savedMessage()) {
+    <div class="success-banner" role="status">{{ savedMessage() }}</div>
+  }
+
+  @if (supplier(); as sup) {
+    <form class="profile-card card" (ngSubmit)="saveProfile()">
+      <h2>Business Information</h2>
+      <div class="grid-2">
+        <div class="form-field">
+          <label for="sp-bname">Business Name</label>
+          <input id="sp-bname" name="bname" [ngModel]="businessName()" (ngModelChange)="businessName.set($event)" required />
+        </div>
+        <div class="form-field">
+          <label for="sp-reg">Registration Number</label>
+          <input id="sp-reg" [value]="sup.businessRegNo" disabled />
+        </div>
+        <div class="form-field">
+          <label for="sp-email">Official Email</label>
+          <input id="sp-email" [value]="sup.email" disabled />
+        </div>
+        <div class="form-field">
+          <label for="sp-phone">Contact Number</label>
+          <input id="sp-phone" name="phone" [ngModel]="phone()" (ngModelChange)="phone.set($event)" required />
+        </div>
+        <div class="form-field">
+          <label for="sp-addr">Business Address</label>
+          <input id="sp-addr" name="addr" [ngModel]="businessAddress()" (ngModelChange)="businessAddress.set($event)" required />
+        </div>
+        <div class="form-field">
+          <label for="sp-city">City</label>
+          <input id="sp-city" name="city" [ngModel]="city()" (ngModelChange)="city.set($event)" />
+        </div>
+      </div>
+
+      <h2>Owner &amp; Verification Information</h2>
+      <div class="grid-2">
+        <div class="form-field">
+          <label for="sp-oname">Owner Name</label>
+          <input id="sp-oname" name="oname" [ngModel]="ownerName()" (ngModelChange)="ownerName.set($event)" required />
+        </div>
+        <div class="form-field">
+          <label for="sp-nic">NIC Number</label>
+          <input id="sp-nic" [value]="sup.nicNumber" disabled />
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="sp-res">Residential Address</label>
+        <input id="sp-res" name="res" [ngModel]="residentialAddress()" (ngModelChange)="residentialAddress.set($event)" required />
+      </div>
+
+      <div class="docs-row">
+        <span>NIC Front: <strong>{{ sup.nicFrontFileName }}</strong></span>
+        <span>NIC Back: <strong>{{ sup.nicBackFileName }}</strong></span>
+      </div>
+
+      <button type="submit" class="btn-sup-primary">Save Profile Changes</button>
+    </form>
+  }
+</div>
+

@@ -1,0 +1,63 @@
+<div class="confirmation-page">
+  <div class="container page-wrap">
+    @if (order(); as o) {
+      <section class="confirm-card card">
+        <div class="confirm-header">
+          <span class="confirm-badge">Order Confirmed</span>
+          <h1>Thank you, {{ o.buyerName }}!</h1>
+          <p>
+            Your Click &amp; Collect electronics order has been placed with reference
+            <strong>{{ o.orderNumber }}</strong>.
+          </p>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-box">
+            <h3>Collection Branch</h3>
+            <strong>{{ o.pickupBranchName }}</strong>
+            <span>{{ o.pickupAddress }}</span>
+          </div>
+
+          <div class="info-box">
+            <h3>Order &amp; Payment</h3>
+            <div class="badge-row">
+              <app-status-badge [status]="o.status" />
+              <app-status-badge [status]="o.paymentStatus" />
+            </div>
+            <span>Method: {{ o.paymentMethod }}</span>
+            @if (o.paymentReference) {
+              <span>Reference: {{ o.paymentReference }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="items-section">
+          <h3>Order Items</h3>
+          @for (item of o.items; track item.productId) {
+            <div class="item-row">
+              <span>{{ item.productName }} × {{ item.quantity }}</span>
+              <strong>LKR {{ item.unitPrice * item.quantity | number }}</strong>
+            </div>
+          }
+          <div class="total-row">
+            <span>Total Paid / Payable</span>
+            <strong>LKR {{ o.totalAmount | number }}</strong>
+          </div>
+        </div>
+
+        <div class="confirm-actions">
+          <a routerLink="/orders" class="btn-buyer-primary">View My Orders</a>
+          <a routerLink="/products" class="btn-buyer-outline">Continue Shopping</a>
+        </div>
+      </section>
+    } @else {
+      <app-empty-state
+        title="Order confirmation not found"
+        description="We could not locate that order reference."
+        actionLabel="Go to My Orders"
+        (actionClick)="goToOrders()"
+      />
+    }
+  </div>
+</div>
+

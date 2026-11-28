@@ -1,0 +1,58 @@
+<div class="login-page">
+  <div class="login-card card">
+    <div class="login-brand">
+      <a routerLink="/" class="brand-row">
+        <span class="brand-mark">B</span>
+        <span class="brand-name">BIDLIFY</span>
+      </a>
+      <span class="portal-pill">Supplier Portal</span>
+      <h1>Supplier Sign In</h1>
+      <p>Manage your verified electronics catalog, stock, and Click &amp; Collect orders.</p>
+    </div>
+
+    @if (error()) {
+      <div class="error-banner" role="alert">{{ error() }}</div>
+    }
+
+    <form class="login-form" (ngSubmit)="login()">
+      <div class="form-field">
+        <label for="sup-email">Official Business Email *</label>
+        <input
+          id="sup-email"
+          type="email"
+          name="email"
+          [ngModel]="email()"
+          (ngModelChange)="email.set($event)"
+          required
+        />
+      </div>
+
+      <div class="form-field">
+        <label for="sup-pass">Password *</label>
+        <input
+          id="sup-pass"
+          type="password"
+          name="password"
+          [ngModel]="password()"
+          (ngModelChange)="password()"
+          (ngModelChange)="password.set($event)"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn-sup-primary">Sign In to Supplier Portal</button>
+    </form>
+
+    <div class="demo-hint">
+      <strong>Demo Accounts:</strong>
+      <span>Approved: <code>supplier@bidlify.lk</code></span>
+      <span>Pending: <code>amaya@pulsecircuit.lk</code></span>
+    </div>
+
+    <div class="login-footer">
+      <span>New electronics supplier? <a routerLink="/supplier/register">Register here</a></span>
+      <a routerLink="/">← Back to Storefront</a>
+    </div>
+  </div>
+</div>
+

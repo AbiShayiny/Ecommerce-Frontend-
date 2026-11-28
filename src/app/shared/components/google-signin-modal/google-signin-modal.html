@@ -1,0 +1,56 @@
+@if (auth.googleModalOpen()) {
+  <div class="modal-backdrop" (click)="close()">
+    <div
+      class="modal-card card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="google-signin-title"
+      (click)="$event.stopPropagation()"
+    >
+      <button type="button" class="close-btn" aria-label="Close sign-in" (click)="close()">
+        ✕
+      </button>
+
+      <div class="modal-header">
+        <span class="brand-badge">BIDLIFY</span>
+        <h2 id="google-signin-title">Sign in with Google</h2>
+        <p>
+          Browse freely as a guest. Sign in with Google to add electronics to your cart,
+          checkout for Click &amp; Collect, or view your orders.
+        </p>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-field">
+          <label for="google-name">Full Name (Mock Account)</label>
+          <input
+            id="google-name"
+            type="text"
+            [ngModel]="customName()"
+            (ngModelChange)="customName.set($event)"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="google-email">Google Email</label>
+          <input
+            id="google-email"
+            type="email"
+            [ngModel]="customEmail()"
+            (ngModelChange)="customEmail.set($event)"
+          />
+        </div>
+
+        <button type="button" class="google-btn" (click)="signInWithDefault()">
+          <span class="g-icon" aria-hidden="true">G</span>
+          <span>Continue with Google</span>
+        </button>
+      </div>
+
+      <p class="modal-note">
+        No separate buyer registration is required. Mock Google Sign-In for frontend testing.
+      </p>
+    </div>
+  </div>
+}
+

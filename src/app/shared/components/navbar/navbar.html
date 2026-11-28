@@ -1,0 +1,79 @@
+<header class="navbar">
+  <div class="container navbar-inner">
+    <a routerLink="/" class="brand" (click)="closeMobileMenu()">
+      <span class="brand-mark">B</span>
+      <span class="brand-text">BIDLIFY</span>
+    </a>
+
+    <form class="search-form" (ngSubmit)="onSearch()">
+      <input
+        type="search"
+        name="search"
+        placeholder="Search laptops, phones, audio, monitors..."
+        [ngModel]="searchTerm()"
+        (ngModelChange)="searchTerm.set($event)"
+        aria-label="Search electronics"
+      />
+      <button type="submit" class="btn btn-primary btn-sm">Search</button>
+    </form>
+
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      <a routerLink="/products" routerLinkActive="active">Products</a>
+      <a routerLink="/categories" routerLinkActive="active">Categories</a>
+      <a routerLink="/orders" routerLinkActive="active">My Orders</a>
+      <a routerLink="/supplier/login" class="portal-link">Supplier Portal</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a routerLink="/cart" class="cart-btn" aria-label="Shopping cart">
+        <span>Cart</span>
+        <span class="cart-count">{{ cart.itemCount() }}</span>
+      </a>
+
+      @if (auth.currentBuyer(); as buyer) {
+        <div class="buyer-pill">
+          <span class="buyer-name">{{ buyer.name }}</span>
+          <button type="button" class="btn btn-ghost btn-sm" (click)="auth.signOutBuyer()">
+            Sign out
+          </button>
+        </div>
+      } @else {
+        <button type="button" class="btn btn-navy btn-sm" (click)="auth.openGoogleSignIn()">
+          Google Sign-In
+        </button>
+      }
+
+      <button
+        type="button"
+        class="mobile-toggle"
+        [attr.aria-expanded]="mobileMenuOpen()"
+        aria-label="Toggle navigation menu"
+        (click)="toggleMobileMenu()"
+      >
+        {{ mobileMenuOpen() ? '✕' : '☰' }}
+      </button>
+    </div>
+  </div>
+
+  @if (mobileMenuOpen()) {
+    <div class="mobile-drawer">
+      <form class="mobile-search" (ngSubmit)="onSearch()">
+        <input
+          type="search"
+          name="mobileSearch"
+          placeholder="Search electronics..."
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event)"
+        />
+        <button type="submit" class="btn btn-primary btn-sm">Go</button>
+      </form>
+      <a routerLink="/products" (click)="closeMobileMenu()">All Electronics</a>
+      <a routerLink="/categories" (click)="closeMobileMenu()">Categories</a>
+      <a routerLink="/orders" (click)="closeMobileMenu()">My Orders</a>
+      <a routerLink="/cart" (click)="closeMobileMenu()">Cart ({{ cart.itemCount() }})</a>
+      <a routerLink="/supplier/login" (click)="closeMobileMenu()">Supplier Portal</a>
+      <a routerLink="/admin/login" (click)="closeMobileMenu()">Admin Portal</a>
+    </div>
+  }
+</header>
+

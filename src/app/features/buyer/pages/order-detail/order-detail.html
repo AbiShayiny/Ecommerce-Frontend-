@@ -1,0 +1,69 @@
+<div class="order-detail-page">
+  <div class="container page-wrap">
+    @if (order(); as o) {
+      <div class="top-bar">
+        <a routerLink="/orders" class="back-link">← Back to My Orders</a>
+      </div>
+
+      <section class="detail-card card">
+        <div class="detail-header">
+          <div>
+            <span class="kicker">Click &amp; Collect Order</span>
+            <h1>{{ o.orderNumber }}</h1>
+            <p class="date-text">Placed on {{ o.createdAt }} • Supplier: {{ o.supplierName }}</p>
+          </div>
+          <div class="status-badges">
+            <app-status-badge [status]="o.status" />
+            <app-status-badge [status]="'Payment: ' + o.paymentStatus" />
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-box">
+            <h3>Collection Branch</h3>
+            <strong>{{ o.pickupBranchName }}</strong>
+            <span>{{ o.pickupAddress }}</span>
+          </div>
+
+          <div class="info-box">
+            <h3>Payment Information</h3>
+            <strong>{{ o.paymentMethod }}</strong>
+            <span>Status: {{ o.paymentStatus }}</span>
+            @if (o.paymentReference) {
+              <span>Reference: {{ o.paymentReference }}</span>
+            }
+            @if (o.paymentReceiptName) {
+              <span>Receipt: {{ o.paymentReceiptName }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="items-box">
+          <h2>Ordered Electronics</h2>
+          @for (item of o.items; track item.productId) {
+            <div class="item-row">
+              <img [src]="item.imageUrl" [alt]="item.productName" />
+              <div class="item-meta">
+                <a [routerLink]="['/products', item.productId]">{{ item.productName }}</a>
+                <span>Qty: {{ item.quantity }} × LKR {{ item.unitPrice | number }}</span>
+              </div>
+              <strong>LKR {{ item.unitPrice * item.quantity | number }}</strong>
+            </div>
+          }
+          <div class="total-row">
+            <span>Total Amount</span>
+            <strong>LKR {{ o.totalAmount | number }}</strong>
+          </div>
+        </div>
+      </section>
+    } @else {
+      <app-empty-state
+        title="Order not found"
+        description="The requested order details could not be found."
+        actionLabel="Back to My Orders"
+        (actionClick)="backToOrders()"
+      />
+    }
+  </div>
+</div>
+

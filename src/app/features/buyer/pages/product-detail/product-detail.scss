@@ -1,0 +1,74 @@
+.product-detail-page { background: #f8f7f4; color: #242424; padding-block: 1.5rem 3rem; }
+.page-wrap { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.toast-banner {
+  position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 200;
+  background: #242424; color: #fff; padding: 0.75rem 1.25rem;
+  border-radius: 8px; border-left: 4px solid #f47721; font-size: 0.9375rem;
+}
+
+.breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #64748b; }
+.breadcrumb a:hover { color: #f47721; }
+.breadcrumb .current { color: #242424; font-weight: 600; }
+
+.detail-grid { padding: 1.5rem; border-color: #eaeaea; display: grid; gap: 1.75rem; }
+@media (min-width: 1024px) { .detail-grid { grid-template-columns: 1fr 1.15fr; padding: 2rem; } }
+
+.gallery-col, .info-col, .reviews-list { display: flex; flex-direction: column; gap: 0.875rem; }
+.main-image { position: relative; aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden; background: #f1f5f9; }
+.main-image img, .thumb-btn img { width: 100%; height: 100%; object-fit: cover; }
+.pickup-pill {
+  position: absolute; top: 0.75rem; left: 0.75rem; padding: 0.25rem 0.75rem;
+  border-radius: 999px; background: #242424; color: #fff; font-size: 0.75rem; font-weight: 700;
+}
+.thumb-row { display: flex; gap: 0.625rem; flex-wrap: wrap; }
+.thumb-btn { width: 72px; height: 56px; padding: 0; border-radius: 8px; overflow: hidden; border: 2px solid #eaeaea; background: #fff; cursor: pointer; &.active { border-color: #f47721; } }
+
+.meta-top, .rating-row, .price-row, .actions-row, .stock-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+.meta-top { justify-content: space-between; }
+.brand-tag { padding: 0.2rem 0.625rem; border-radius: 999px; background: #fff0e5; color: #f47721; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+.sku-tag, .review-head span, .muted-note { font-size: 0.8125rem; color: #64748b; margin: 0; }
+.info-col h1 { font-size: clamp(1.375rem, 2.5vw, 1.875rem); margin: 0; }
+.supplier-chip { font-size: 0.8125rem; color: #475569; font-weight: 600; }
+
+.price { font-size: 1.625rem; font-weight: 800; }
+.old-price { font-size: 1rem; color: #64748b; text-decoration: line-through; }
+.description, .review-item p, .branches-box li span { color: #475569; margin: 0; }
+.stock-row { font-size: 0.875rem; font-weight: 600; gap: 0.5rem; }
+.stock-dot { width: 9px; height: 9px; border-radius: 50%; background: #dc2626; &.in-stock { background: #16a34a; } }
+
+.qty-control { display: flex; align-items: center; gap: 0.5rem; }
+.qty-label { font-size: 0.875rem; font-weight: 700; }
+.qty-box { display: inline-flex; align-items: center; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; }
+.qty-box button { width: 36px; height: 40px; border: 0; background: none; font-size: 1.125rem; cursor: pointer; &:disabled { opacity: 0.4; cursor: not-allowed; } }
+.qty-value { min-width: 34px; text-align: center; font-weight: 700; }
+
+.btn-add-cart {
+  flex: 1; min-width: 180px; height: 42px; border: 0; border-radius: 8px;
+  background: #f47721; color: #fff; font-weight: 700; font-size: 0.9375rem; cursor: pointer;
+  &:hover:not(:disabled) { background: #d96414; }
+  &:disabled { opacity: 0.55; cursor: not-allowed; }
+}
+
+.branches-box { padding: 1rem; border-radius: 10px; background: #f8f7f4; border: 1px solid #eaeaea; }
+.branches-box h3 { font-size: 0.9375rem; margin: 0 0 0.5rem; }
+.branches-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.branches-box li { display: flex; flex-direction: column; font-size: 0.8125rem; }
+
+.specs-reviews-grid, .related-grid { display: grid; gap: 1.25rem; }
+@media (min-width: 640px) { .related-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) {
+  .specs-reviews-grid { grid-template-columns: 1fr 1fr; }
+  .related-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.panel { padding: 1.5rem; border-color: #eaeaea; }
+.panel h2, .related-section h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+
+.specs-list { margin: 0; }
+.spec-row { display: grid; grid-template-columns: 140px 1fr; gap: 0.75rem; padding-block: 0.625rem; border-bottom: 1px solid #eaeaea; font-size: 0.875rem; }
+.spec-row dt { font-weight: 600; color: #475569; }
+.spec-row dd { margin: 0; font-weight: 500; }
+
+.review-item { padding-bottom: 0.875rem; border-bottom: 1px solid #eaeaea; }
+.review-head { display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 0.25rem; }
+.review-item p { margin-top: 0.375rem; font-size: 0.875rem; }

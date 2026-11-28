@@ -1,0 +1,69 @@
+<div class="adm-page">
+  <div class="page-head">
+    <h1>Supplier Approval &amp; Verification</h1>
+    <p>Review supplier business details, NIC documents, and approve or reject applications.</p>
+  </div>
+
+  @if (feedback()) {
+    <div class="info-banner" role="status">{{ feedback() }}</div>
+  }
+
+  <div class="filters-bar card">
+    <input type="search" placeholder="Search business, owner, email, NIC..." [ngModel]="search()" (ngModelChange)="search.set($event)" />
+    <select [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event)">
+      <option value="all">All Statuses</option>
+      <option value="Pending">Pending</option>
+      <option value="Approved">Approved</option>
+      <option value="Rejected">Rejected</option>
+    </select>
+  </div>
+
+  <div class="split-layout">
+    <div class="table-card card">
+      <table>
+        <thead>
+          <tr><th>Business</th><th>Owner</th><th>Status</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+          @for (sup of filteredSuppliers(); track sup.id) {
+            <tr>
+              <td><strong>{{ sup.businessName }}</strong><div class="sub">{{ sup.email }}</div></td>
+              <td>{{ sup.ownerName }}<div class="sub">{{ sup.nicNumber }}</div></td>
+              <td><app-status-badge [status]="sup.approvalStatus" /></td>
+              <td><button type="button" class="view-btn" (click)="inspect(sup)">Review</button></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (selectedSupplier(); as sup) {
+      <aside class="detail-card card">
+        <div class="detail-head">
+          <h2>{{ sup.businessName }}</h2>
+          <app-status-badge [status]="sup.approvalStatus" />
+        </div>
+        <div class="kv-list">
+          <div><span>Reg No</span><strong>{{ sup.businessRegNo }}</strong></div>
+          <div><span>Address</span><strong>{{ sup.businessAddress }}</strong></div>
+          <div><span>Owner</span><strong>{{ sup.ownerName }}</strong></div>
+          <div><span>NIC</span><strong>{{ sup.nicNumber }}</strong></div>
+          <div><span>Residential</span><strong>{{ sup.residentialAddress }}</strong></div>
+          <div><span>NIC Front</span><strong>{{ sup.nicFrontFileName }}</strong></div>
+          <div><span>NIC Back</span><strong>{{ sup.nicBackFileName }}</strong></div>
+        </div>
+
+        <div class="form-field">
+          <label for="rej-reason">Rejection Reason (required if rejecting)</label>
+          <textarea id="rej-reason" rows="2" [ngModel]="rejectionReason()" (ngModelChange)="rejectionReason.set($event)"></textarea>
+        </div>
+
+        <div class="action-row">
+          <button type="button" class="btn-adm-primary" (click)="approve(sup)">Approve Supplier</button>
+          <button type="button" class="btn-adm-danger" (click)="reject(sup)">Reject</button>
+        </div>
+      </aside>
+    }
+  </div>
+</div>
+

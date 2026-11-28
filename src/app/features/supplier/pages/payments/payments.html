@@ -1,0 +1,54 @@
+<div class="sup-page">
+  <div class="page-head">
+    <div>
+      <h1>Payment &amp; Settlement</h1>
+      <p>Mock payment overview, platform commission (5%), and supplier settlement history.</p>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card card"><span>Gross Order Value</span><strong>LKR {{ grossEarnings() | number }}</strong></div>
+    <div class="kpi-card card"><span>Platform Commission (5%)</span><strong>LKR {{ totalCommission() | number }}</strong></div>
+    <div class="kpi-card card accent"><span>Net Supplier Earnings</span><strong>LKR {{ netEarnings() | number }}</strong></div>
+  </div>
+
+  <div class="table-card card">
+    <table>
+      <thead>
+        <tr>
+          <th>Order Ref</th>
+          <th>Payment Method</th>
+          <th>Reference</th>
+          <th>Gross (LKR)</th>
+          <th>Commission</th>
+          <th>Net Settlement</th>
+          <th>Payment Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (o of supplierOrders(); track o.id) {
+          <tr>
+            <td><strong>{{ o.orderNumber }}</strong></td>
+            <td>{{ o.paymentMethod }}</td>
+            <td>{{ o.paymentReference || '—' }}</td>
+            <td>{{ o.totalAmount | number }}</td>
+            <td>{{ o.totalAmount * commissionRate | number:'1.0-0' }}</td>
+            <td><strong>{{ o.totalAmount * (1 - commissionRate) | number:'1.0-0' }}</strong></td>
+            <td><app-status-badge [status]="o.paymentStatus" /></td>
+            <td>
+              @if (o.paymentStatus === 'Pending') {
+                <button type="button" class="verify-btn" (click)="verifyPayment(o.id)">
+                  Verify Payment
+                </button>
+              } @else {
+                <span class="done-text">Settled</span>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+

@@ -1,0 +1,132 @@
+<div class="home-page">
+  @if (cartFeedback()) {
+    <div class="toast-banner" role="status" aria-live="polite">
+      <span>{{ cartFeedback() }}</span>
+    </div>
+  }
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="hero-eyebrow">Verified Electronics • Click &amp; Collect</span>
+        <h1>Upgrade Your Tech with Confidence on BIDLIFY</h1>
+        <p>
+          Shop curated laptops, 5G smartphones, studio audio, monitors, and accessories from
+          approved electronics suppliers—order online and collect at your nearest BIDLIFY branch.
+        </p>
+
+        <div class="hero-actions">
+          <a routerLink="/products" class="btn-buyer-primary">Shop Now</a>
+          <a routerLink="/categories" class="btn-buyer-outline">Explore Products</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <strong>100%</strong>
+            <span>Electronics Catalog</span>
+          </div>
+          <div class="stat-item">
+            <strong>{{ cart.branches().length }} Hubs</strong>
+            <span>Click &amp; Collect Branches</span>
+          </div>
+          <div class="stat-item">
+            <strong>Guest</strong>
+            <span>Free Browsing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-card">
+          <span class="card-badge">Featured Flagship</span>
+          <h3>ProBook Ultra 14 OLED</h3>
+          <p>Intel Core Ultra 7 • 16GB RAM • 1TB NVMe SSD</p>
+          <div class="card-meta">
+            <span class="card-price">LKR 389,000</span>
+            <a routerLink="/products" class="card-link">View Catalog →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Electronics Categories -->
+  <section class="section-block">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Browse by Category</span>
+          <h2>Electronics Categories</h2>
+        </div>
+        <a routerLink="/categories" class="view-all-link">View All Categories →</a>
+      </div>
+
+      <div class="categories-grid">
+        @for (category of catalog.activeCategories(); track category.id) {
+          <a [routerLink]="['/categories', category.slug]" class="category-card">
+            <span class="category-badge">{{ category.productCount }} items</span>
+            <h3>{{ category.name }}</h3>
+            <p>{{ category.description }}</p>
+            <span class="category-cta">Explore →</span>
+          </a>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Electronics Products -->
+  <section class="section-block featured-section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Top Picks</span>
+          <h2>Featured Electronics</h2>
+        </div>
+        <a routerLink="/products" class="view-all-link">Explore All Products →</a>
+      </div>
+
+      <div class="products-grid">
+        @for (product of catalog.featuredProducts(); track product.id) {
+          <app-product-card [product]="product" (addToCart)="handleAddToCart($event)" />
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Product Recommendations -->
+  <section class="section-block">
+    <div class="container">
+      <app-ai-recommendations />
+    </div>
+  </section>
+
+  <!-- Click & Collect Information -->
+  <section class="section-block">
+    <div class="container">
+      <div class="click-collect-banner">
+        <div class="cc-intro">
+          <span class="section-kicker">Click &amp; Collect Only</span>
+          <h2>Convenient In-Store Pickup Across Sri Lanka</h2>
+          <p>
+            Every BIDLIFY electronics order is fulfilled via Click &amp; Collect at our verified
+            pickup branches. Inspect your device at the counter with zero delivery wait.
+          </p>
+          <a routerLink="/products" class="btn-buyer-primary">Start Shopping</a>
+        </div>
+
+        <div class="branches-grid">
+          @for (branch of cart.branches(); track branch.id) {
+            <div class="branch-card">
+              <span class="branch-city">{{ branch.city }}</span>
+              <h3>{{ branch.name }}</h3>
+              <p>{{ branch.address }}</p>
+              <span class="branch-hours">{{ branch.hours }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+

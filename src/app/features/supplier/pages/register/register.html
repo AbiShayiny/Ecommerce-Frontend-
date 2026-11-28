@@ -1,0 +1,135 @@
+<div class="auth-page">
+  <div class="auth-shell">
+    <aside class="brand-panel">
+      <a routerLink="/" class="brand-row">
+        <span class="brand-mark">B</span>
+        <span class="brand-name">BIDLIFY</span>
+      </a>
+      <span class="portal-tag">Supplier Onboarding</span>
+      <h1>Sell Verified Electronics on BIDLIFY</h1>
+      <p>
+        Register your electronics store to list products for Click &amp; Collect buyers across Sri Lanka.
+        All applications undergo Admin verification before store activation.
+      </p>
+      <ul class="highlights">
+        <li>Electronics-only curated marketplace</li>
+        <li>Click &amp; Collect branch fulfillment</li>
+        <li>Verified supplier &amp; NIC onboarding</li>
+      </ul>
+    </aside>
+
+    <main class="form-panel card">
+      @if (submitted()) {
+        <div class="confirm-box">
+          <span class="status-pill">Pending Admin Approval</span>
+          <h2>Registration Submitted</h2>
+          <p>
+            Thank you! Your supplier application for <strong>{{ businessName() }}</strong> has been
+            submitted and is currently awaiting Admin review.
+          </p>
+          <button type="button" class="btn-sup-primary" (click)="goToPending()">
+            View Pending Approval Status
+          </button>
+        </div>
+      } @else {
+        <div class="form-head">
+          <h2>Supplier Registration</h2>
+          <p>Already registered? <a routerLink="/supplier/login">Sign in here</a></p>
+        </div>
+
+        @if (error()) {
+          <div class="error-banner" role="alert">{{ error() }}</div>
+        }
+
+        <form class="reg-form" (ngSubmit)="submit()">
+          <h3>Business Information</h3>
+          <div class="grid-2">
+            <div class="form-field">
+              <label for="b-name">Business Name *</label>
+              <input id="b-name" name="bName" [ngModel]="businessName()" (ngModelChange)="businessName.set($event)" required />
+            </div>
+            <div class="form-field">
+              <label for="b-type">Business Type *</label>
+              <select id="b-type" name="bType" [ngModel]="businessType()" (ngModelChange)="businessType.set($event)">
+                <option value="Private Limited (Pvt Ltd)">Private Limited (Pvt Ltd)</option>
+                <option value="Sole Proprietorship">Sole Proprietorship</option>
+                <option value="Partnership">Partnership</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="b-reg">Business Registration No *</label>
+              <input id="b-reg" name="bReg" [ngModel]="businessRegNo()" (ngModelChange)="businessRegNo.set($event)" required />
+            </div>
+            <div class="form-field">
+              <label for="b-email">Official Email *</label>
+              <input id="b-email" type="email" name="bEmail" [ngModel]="email()" (ngModelChange)="email.set($event)" required />
+            </div>
+            <div class="form-field">
+              <label for="b-phone">Contact Number *</label>
+              <input id="b-phone" name="bPhone" [ngModel]="phone()" (ngModelChange)="phone.set($event)" required />
+            </div>
+            <div class="form-field">
+              <label for="b-district">District *</label>
+              <input id="b-district" name="bDistrict" [ngModel]="district()" (ngModelChange)="district.set($event)" required />
+            </div>
+            <div class="form-field">
+              <label for="b-city">City *</label>
+              <input id="b-city" name="bCity" [ngModel]="city()" (ngModelChange)="city.set($event)" required />
+            </div>
+            <div class="form-field">
+              <label for="b-addr">Business Address *</label>
+              <input id="b-addr" name="bAddr" [ngModel]="businessAddress()" (ngModelChange)="businessAddress.set($event)" required />
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="b-desc">Business Description *</label>
+            <textarea id="b-desc" rows="2" name="bDesc" [ngModel]="businessDescription()" (ngModelChange)="businessDescription.set($event)" required></textarea>
+          </div>
+
+          <h3>Owner Information</h3>
+          <div class="grid-2">
+            <div class="form-field">
+              <label for="o-name">Owner Full Name *</label>
+              <input id="o-name" name="oName" [ngModel]="ownerName()" (ngModelChange)="ownerName.set($event)" required />
+            </div>
+            <div class="form-field">
+              <label for="o-nic">NIC Number *</label>
+              <input id="o-nic" name="oNic" [ngModel]="nicNumber()" (ngModelChange)="nicNumber.set($event)" required />
+            </div>
+            <div class="form-field">
+              <label for="o-email">Owner Email *</label>
+              <input id="o-email" type="email" name="oEmail" [ngModel]="ownerEmail()" (ngModelChange)="ownerEmail.set($event)" required />
+            </div>
+            <div class="form-field">
+              <label for="o-mob">Owner Mobile Number *</label>
+              <input id="o-mob" name="oMob" [ngModel]="ownerMobile()" (ngModelChange)="ownerMobile.set($event)" required />
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="o-addr">Residential Address *</label>
+            <input id="o-addr" name="oAddr" [ngModel]="residentialAddress()" (ngModelChange)="residentialAddress.set($event)" required />
+          </div>
+
+          <h3>Verification Documents</h3>
+          <div class="grid-3">
+            <div class="form-field">
+              <label for="doc-front">NIC Front *</label>
+              <input id="doc-front" type="file" accept=".jpg,.jpeg,.png,.pdf" (change)="onFile('front', $event)" />
+            </div>
+            <div class="form-field">
+              <label for="doc-back">NIC Back *</label>
+              <input id="doc-back" type="file" accept=".jpg,.jpeg,.png,.pdf" (change)="onFile('back', $event)" />
+            </div>
+            <div class="form-field">
+              <label for="doc-reg">Business Reg Doc *</label>
+              <input id="doc-reg" type="file" accept=".jpg,.jpeg,.png,.pdf" (change)="onFile('reg', $event)" />
+            </div>
+          </div>
+
+          <button type="submit" class="btn-sup-primary">Submit Supplier Application</button>
+        </form>
+      }
+    </main>
+  </div>
+</div>
+

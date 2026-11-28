@@ -1,0 +1,49 @@
+<div class="sup-page">
+  <div class="page-head">
+    <div>
+      <h1>Inventory &amp; Stock Management</h1>
+      <p>Update stock levels for your electronics catalog. Negative stock is prevented.</p>
+    </div>
+    <span class="alert-pill">Low Stock Alerts: {{ lowStockCount() }}</span>
+  </div>
+
+  @if (feedback()) {
+    <div class="success-banner" role="status">{{ feedback() }}</div>
+  }
+
+  <div class="table-card card">
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>SKU</th>
+          <th>Current Stock</th>
+          <th>Status</th>
+          <th>Update Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of myProducts(); track p.id) {
+          <tr>
+            <td><strong>{{ p.name }}</strong></td>
+            <td>{{ p.sku }}</td>
+            <td><strong>{{ p.stock }}</strong></td>
+            <td><app-status-badge [status]="getStockStatus(p.stock)" /></td>
+            <td class="stock-controls">
+              <button type="button" [disabled]="p.stock <= 0" (click)="changeStock(p.id, p.stock - 1)">−</button>
+              <input
+                type="number"
+                min="0"
+                [ngModel]="p.stock"
+                (ngModelChange)="changeStock(p.id, $event)"
+                [attr.aria-label]="'Stock for ' + p.name"
+              />
+              <button type="button" (click)="changeStock(p.id, p.stock + 1)">+</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+

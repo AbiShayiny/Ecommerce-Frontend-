@@ -1,0 +1,47 @@
+<div class="orders-page">
+  <section class="page-banner">
+    <div class="container">
+      <span class="kicker">Click &amp; Collect Orders</span>
+      <h1>My Orders</h1>
+      <p>Track your electronics orders and Click &amp; Collect branch pickup status.</p>
+    </div>
+  </section>
+
+  <div class="container">
+    @if (buyerOrders().length > 0) {
+      <div class="orders-list">
+        @for (order of buyerOrders(); track order.id) {
+          <article class="order-card card">
+            <div class="order-main">
+              <div class="order-top">
+                <strong>{{ order.orderNumber }}</strong>
+                <app-status-badge [status]="order.status" />
+              </div>
+              <span class="order-meta">
+                Placed on {{ order.createdAt }} • {{ order.pickupBranchName }}
+              </span>
+              <span class="order-items-count">
+                {{ order.items.length }} item(s) • Payment: {{ order.paymentStatus }}
+              </span>
+            </div>
+
+            <div class="order-right">
+              <strong class="order-total">LKR {{ order.totalAmount | number }}</strong>
+              <a [routerLink]="['/orders', order.id]" class="btn-buyer-outline">
+                View Order Details
+              </a>
+            </div>
+          </article>
+        }
+      </div>
+    } @else {
+      <app-empty-state
+        title="No orders yet"
+        description="You have not placed any Click & Collect electronics orders yet."
+        actionLabel="Shop Electronics"
+        (actionClick)="browseShop()"
+      />
+    }
+  </div>
+</div>
+

@@ -1,0 +1,95 @@
+<div class="cart-page">
+  <section class="page-banner">
+    <div class="container">
+      <span class="kicker">Click &amp; Collect Electronics</span>
+      <h1>Shopping Cart</h1>
+      <p>Review your selected electronics before proceeding to Click &amp; Collect checkout.</p>
+    </div>
+  </section>
+
+  <div class="container">
+    @if (cart.items().length > 0) {
+      <div class="cart-layout">
+        <div class="cart-items-col">
+          @for (item of cart.items(); track item.productId) {
+            <article class="cart-item card">
+              <a [routerLink]="['/products', item.productId]" class="item-thumb">
+                <img [src]="item.imageUrl" [alt]="item.name" />
+              </a>
+
+              <div class="item-info">
+                <span class="item-brand">{{ item.brand }}</span>
+                <a [routerLink]="['/products', item.productId]" class="item-title">
+                  {{ item.name }}
+                </a>
+                <span class="item-price">Unit Price: LKR {{ item.price | number }}</span>
+                <span class="item-stock">Available stock: {{ item.maxStock }}</span>
+              </div>
+
+              <div class="item-actions">
+                <div class="qty-box" aria-label="Cart item quantity">
+                  <button
+                    type="button"
+                    aria-label="Decrease quantity"
+                    [disabled]="item.quantity <= 1"
+                    (click)="decrement(item.productId, item.quantity)"
+                  >
+                    −
+                  </button>
+                  <span>{{ item.quantity }}</span>
+                  <button
+                    type="button"
+                    aria-label="Increase quantity"
+                    [disabled]="item.quantity >= item.maxStock"
+                    (click)="increment(item.productId, item.quantity, item.maxStock)"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <strong class="line-total">
+                  LKR {{ item.price * item.quantity | number }}
+                </strong>
+
+                <button
+                  type="button"
+                  class="remove-btn"
+                  (click)="removeItem(item.productId)"
+                >
+                  Remove
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+
+        <aside class="summary-card card">
+          <h2>Order Summary</h2>
+          <div class="summary-row">
+            <span>Items ({{ cart.itemCount() }})</span>
+            <span>LKR {{ cart.subtotal() | number }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Fulfillment</span>
+            <span>Click &amp; Collect (Free)</span>
+          </div>
+          <div class="summary-total">
+            <span>Total</span>
+            <strong>LKR {{ cart.subtotal() | number }}</strong>
+          </div>
+
+          <a routerLink="/checkout" class="btn-buyer-primary">Proceed to Checkout</a>
+          <a routerLink="/products" class="btn-buyer-outline">Continue Shopping</a>
+        </aside>
+      </div>
+    } @else {
+      <app-empty-state
+        title="Your shopping cart is empty"
+        description="Browse our electronics catalog and add items to begin Click & Collect checkout."
+        actionLabel="Continue Shopping"
+        (actionClick)="continueShopping()"
+      />
+    }
+  </div>
+</div>
+

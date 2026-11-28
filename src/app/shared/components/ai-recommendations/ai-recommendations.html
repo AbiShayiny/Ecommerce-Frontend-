@@ -1,0 +1,28 @@
+@if (recommendations().length > 0) {
+  <section class="ai-rec-section">
+    <div class="rec-header">
+      <span class="ai-pill">AI Product Recommendations</span>
+      <h2>{{ heading() }}</h2>
+    </div>
+
+    <div class="rec-grid">
+      @for (item of recommendations(); track item.product.id) {
+        <a [routerLink]="['/products', item.product.id]" class="rec-card card">
+          <div class="rec-media">
+            <img [src]="item.product.imageUrl" [alt]="item.product.name" loading="lazy" />
+          </div>
+          <div class="rec-body">
+            <span class="rec-reason">{{ item.reason }}</span>
+            <h3>{{ item.product.name }}</h3>
+            <app-rating-stars [rating]="item.product.rating" [reviewCount]="item.product.reviewCount" />
+            <div class="rec-footer">
+              <strong>LKR {{ item.product.price | number }}</strong>
+              <span class="rec-link">View Details →</span>
+            </div>
+          </div>
+        </a>
+      }
+    </div>
+  </section>
+}
+

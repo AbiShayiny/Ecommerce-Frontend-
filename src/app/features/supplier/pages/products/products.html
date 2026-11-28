@@ -1,0 +1,76 @@
+<div class="sup-page">
+  <div class="page-head">
+    <div>
+      <h1>My Electronics Products</h1>
+      <p>Manage your listed electronics, pricing, and approval statuses.</p>
+    </div>
+    <a routerLink="/supplier/products/new" class="btn-sup-primary">+ Add New Product</a>
+  </div>
+
+  <div class="filters-bar card">
+    <input
+      type="search"
+      placeholder="Search by name, brand, or SKU..."
+      [ngModel]="search()"
+      (ngModelChange)="search.set($event)"
+    />
+    <select [ngModel]="categoryFilter()" (ngModelChange)="categoryFilter.set($event)">
+      <option value="all">All Categories</option>
+      @for (cat of catalog.categories(); track cat.id) {
+        <option [value]="cat.slug">{{ cat.name }}</option>
+      }
+    </select>
+    <select [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event)">
+      <option value="all">All Statuses</option>
+      <option value="Active">Active</option>
+      <option value="Pending">Pending</option>
+      <option value="Rejected">Rejected</option>
+    </select>
+  </div>
+
+  @if (filteredProducts().length > 0) {
+    <div class="table-card card">
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Brand</th>
+            <th>Price (LKR)</th>
+            <th>Stock</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of filteredProducts(); track p.id) {
+            <tr>
+              <td class="prod-cell">
+                <img [src]="p.imageUrl" [alt]="p.name" />
+                <div>
+                  <strong>{{ p.name }}</strong>
+                  <span>{{ p.sku }}</span>
+                </div>
+              </td>
+              <td>{{ p.categoryName }}</td>
+              <td>{{ p.brand }}</td>
+              <td>{{ p.price | number }}</td>
+              <td>{{ p.stock }}</td>
+              <td><app-status-badge [status]="getStatus(p)" /></td>
+              <td class="actions-cell">
+                <a [routerLink]="['/supplier/products', p.id, 'edit']" class="edit-link">Edit</a>
+                <button type="button" class="del-btn" (click)="deleteProduct(p)">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <app-empty-state
+      title="No matching products"
+      description="No electronics products matched your filters."
+    />
+  }
+</div>
+

@@ -1,0 +1,14 @@
+.adm-page { display: flex; flex-direction: column; gap: 1.25rem; color: #242424; }
+.page-head h1 { color: #242424; font-size: 1.625rem; margin: 0 0 0.25rem; }
+.page-head p { color: #475569; margin: 0; font-size: 0.9375rem; }
+.info-banner { padding: 0.75rem 1rem; border-radius: 8px; background: #fff0e5; color: #f47721; border: 1px solid #f47721; font-weight: 600; font-size: 0.875rem; }
+
+.split-layout { display: grid; gap: 1.25rem; align-items: start; @media (min-width: 1024px) { grid-template-columns: 360px 1fr; } }
+.form-card, .history-card { padding: 1.25rem; border-color: #eaeaea; display: flex; flex-direction: column; gap: 1rem; h2 { font-size: 1.0625rem; margin: 0; } }
+.btn-adm-primary { padding: 0.6875rem 1.25rem; border: 0; border-radius: 8px; background: #f47721; color: #fff; font-weight: 700; cursor: pointer; }
+
+.notif-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.notif-item { padding: 0.875rem; border-radius: 8px; background: #f8f7f4; border: 1px solid #eaeaea; p { margin: 0.25rem 0; font-size: 0.875rem; color: #475569; } }
+.notif-head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+.time { font-size: 0.75rem; color: #64748b; }
+

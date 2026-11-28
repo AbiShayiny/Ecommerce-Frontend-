@@ -1,0 +1,55 @@
+<div class="chatbot-root">
+  @if (isOpen()) {
+    <section class="chat-window card" role="dialog" aria-label="BIDLIFY AI Customer Support">
+      <header class="chat-header">
+        <div>
+          <strong>BIDLIFY AI Assistant</strong>
+          <span>Electronics &amp; Click &amp; Collect Help</span>
+        </div>
+        <button type="button" class="close-btn" aria-label="Close chat" (click)="toggle()">✕</button>
+      </header>
+
+      <div class="chat-messages">
+        @for (msg of ai.messages(); track msg.id) {
+          <div class="msg-row" [class.user]="msg.sender === 'user'">
+            <div class="msg-bubble">
+              <p>{{ msg.text }}</p>
+              @if (msg.recommendations?.length) {
+                <div class="rec-mini-list">
+                  @for (prod of msg.recommendations; track prod.id) {
+                    <a [routerLink]="['/products', prod.id]" class="rec-mini-card" (click)="toggle()">
+                      <strong>{{ prod.name }}</strong>
+                      <span>LKR {{ prod.price | number }}</span>
+                    </a>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="suggestions-bar">
+        @for (q of ai.suggestedQuestions; track q) {
+          <button type="button" class="chip-btn" (click)="send(q)">{{ q }}</button>
+        }
+      </div>
+
+      <form class="chat-input-row" (ngSubmit)="send()">
+        <input
+          type="text"
+          name="chatInput"
+          placeholder="Ask about electronics, cart, checkout..."
+          [ngModel]="draft()"
+          (ngModelChange)="draft.set($event)"
+        />
+        <button type="submit" class="send-btn">Send</button>
+      </form>
+    </section>
+  }
+
+  <button type="button" class="fab-btn" (click)="toggle()" [attr.aria-expanded]="isOpen()">
+    {{ isOpen() ? 'Close AI' : 'AI Support' }}
+  </button>
+</div>
+

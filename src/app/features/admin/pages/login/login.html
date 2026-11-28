@@ -1,0 +1,36 @@
+<div class="login-page">
+  <div class="login-card card">
+    <div class="login-brand">
+      <a routerLink="/" class="brand-row">
+        <span class="brand-mark">B</span>
+        <span class="brand-name">BIDLIFY</span>
+      </a>
+      <span class="portal-pill">Admin Operations</span>
+      <h1>Admin Sign In</h1>
+      <p>Sign in to manage supplier approvals, electronics products, orders, and platform governance.</p>
+    </div>
+
+    @if (error()) {
+      <div class="error-banner" role="alert">{{ error() }}</div>
+    }
+
+    <form class="login-form" (ngSubmit)="login()">
+      <div class="form-field">
+        <label for="adm-email">Admin Email *</label>
+        <input id="adm-email" type="email" name="email" [ngModel]="email()" (ngModelChange)="email.set($event)" required />
+      </div>
+
+      <div class="form-field">
+        <label for="adm-pass">Password *</label>
+        <input id="adm-pass" type="password" name="pass" [ngModel]="password()" (ngModelChange)="password.set($event)" required />
+      </div>
+
+      <button type="submit" class="btn-adm-primary">Sign In to Admin Portal</button>
+    </form>
+
+    <div class="login-footer">
+      <a routerLink="/">← Back to Storefront</a>
+    </div>
+  </div>
+</div>
+
